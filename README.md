@@ -1,38 +1,35 @@
-# create-svelte
+## Example showing how to mock `$env` in Playwright tests for SvelteKit.
 
-Everything you need to build a Svelte project, powered by [`create-svelte`](https://github.com/sveltejs/kit/tree/master/packages/create-svelte).
+The following is needed to mock the `$env` module. 
 
-## Creating a project
-
-If you're seeing this, you've probably already done this step. Congrats!
-
-```bash
-# create a new project in the current directory
-npm create svelte@latest
-
-# create a new project in my-app
-npm create svelte@latest my-app
+1. Add the following to tsconfig.json
+```
+    // Everything below is required for Playwright tests to access path aliases
+    "baseUrl": ".",
+    "paths": {
+      "$lib": ["src/lib"],
+      "$lib/*": ["src/lib/*"],
+      "$env/*": ["tests/e2e/mocks/env/*"]
+    }
 ```
 
-## Developing
+2. Set `testDir` in playwright.config.ts to `'tests/e2e'`.
 
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
+3. Mock `$env/dynamic/private` by adding the file `tests/e2e/mocks/env/dynamic/private.ts` and export a `env` const. 
+E.g.
 
-```bash
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
+```
+export const env = process.env
 ```
 
-## Building
+4. Import from `$env` in your tests
 
-To create a production version of your app:
 
-```bash
-npm run build
-```
+## Running tests
 
-You can preview the production build with `npm run preview`.
+1. `npm i`
+2. `npm run build`
+3. `HELLO=WORLD npm run test:integration`
 
-> To deploy your app, you may need to install an [adapter](https://kit.svelte.dev/docs/adapters) for your target environment.
+
+

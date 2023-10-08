@@ -14,7 +14,6 @@
     "paths": {
       "$lib": ["src/lib"],
       "$lib/*": ["src/lib/*"],
-      //"$env": ["tests/e2e/mocks/env"],
       "$env/*": ["tests/e2e/mocks/env/*"]
     }
   }
